@@ -1,0 +1,30 @@
+.dashboard-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  color: white;
+  background: linear-gradient(125deg, #312e81 0%, #4f46e5 52%, #0891b2 100%);
+  box-shadow: 0 24px 55px rgba(49, 46, 129, 0.28);
+}
+
+.dashboard-hero::after {
+  position: absolute;
+  top: -6rem;
+  right: -2rem;
+  width: 18rem;
+  height: 18rem;
+  content: '';
+  border: 2rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+@media (max-width: 760px) {
+  .dashboard {
+    padding: 2rem 1rem;
+  }
+
+  .dashboard h1 {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,56 @@
+.app-card.payment-panel {
+  border: 0;
+  color: white;
+  background: linear-gradient(155deg, #0f172a, #1e3a8a);
+  box-shadow: 0 20px 35px rgba(30, 58, 138, 0.22);
+}
+
+.form-control {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  color: #172033;
+  outline: none;
+  background: white;
+  transition: 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #67e8f9;
+  box-shadow: 0 0 0 4px rgba(103, 232, 249, 0.22);
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  cursor: pointer;
+  color: #172033;
+  background: #67e8f9;
+  font-weight: 800;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  background: #a5f3fc;
+}
+
+.form-notice {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-notice.error {
+  color: #fecaca;
+}
+
+.form-notice.success {
+  color: #a5f3fc;
+}

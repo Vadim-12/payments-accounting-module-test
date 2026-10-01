@@ -1,0 +1,27 @@
+.status-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.status-badge.unpaid {
+  color: #9d174d;
+  background: #fce7f3;
+}
+
+.status-badge.partially_paid {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-badge.paid {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.status-badge.overpaid {
+  color: #1d4ed8;
+  background: #dbeafe;
+}

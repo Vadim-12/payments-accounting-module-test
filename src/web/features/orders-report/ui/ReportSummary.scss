@@ -1,0 +1,22 @@
+.metric-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.35rem;
+  height: 100%;
+  content: '';
+  background: #635bff;
+}
+
+.metric-card:nth-child(2)::before {
+  background: #10b981;
+}
+
+.metric-card:nth-child(3)::before {
+  background: #f59e0b;
+}
