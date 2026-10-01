@@ -2,13 +2,14 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DashboardPage } from '@/web/pages/dashboard/DashboardPage';
 
-const api = vi.hoisted(() => ({ listOrders: vi.fn(), addPayment: vi.fn() }));
+const api = vi.hoisted(() => ({ useOrdersQuery: vi.fn(), mutateAsync: vi.fn() }));
 
-vi.mock('@/web/trpc', () => ({
-  trpc: {
-    orders: { list: { query: api.listOrders } },
-    payments: { add: { mutate: api.addPayment } },
-  },
+vi.mock('@/web/entities/order/api/useOrdersQuery', () => ({
+  useOrdersQuery: api.useOrdersQuery,
+}));
+
+vi.mock('@/web/features/payment-form/api/useAddPaymentMutation', () => ({
+  useAddPaymentMutation: () => ({ isPending: false, mutateAsync: api.mutateAsync }),
 }));
 
 describe('DashboardPage', () => {
@@ -17,17 +18,21 @@ describe('DashboardPage', () => {
   beforeEach(() => vi.resetAllMocks());
 
   it('renders order data and calculated totals', async () => {
-    api.listOrders.mockResolvedValue([
-      {
-        id: 'order-1',
-        number: 'ORD-001',
-        totalAmount: 12_500,
-        status: 'paid',
-        payments: [],
-        paid: 12_500,
-        balance: 0,
-      },
-    ]);
+    api.useOrdersQuery.mockReturnValue({
+      data: [
+        {
+          id: 'order-1',
+          number: 'ORD-001',
+          totalAmount: 12_500,
+          status: 'paid',
+          payments: [],
+          paid: 12_500,
+          balance: 0,
+        },
+      ],
+      isError: false,
+      isPending: false,
+    });
     render(<DashboardPage />);
 
     expect(await screen.findByText('ORD-001')).toBeTruthy();
@@ -36,7 +41,7 @@ describe('DashboardPage', () => {
   });
 
   it('shows a recoverable error when the API is unavailable', async () => {
-    api.listOrders.mockRejectedValue(new Error('Network error'));
+    api.useOrdersQuery.mockReturnValue({ data: undefined, isError: true, isPending: false });
     render(<DashboardPage />);
 
     expect(

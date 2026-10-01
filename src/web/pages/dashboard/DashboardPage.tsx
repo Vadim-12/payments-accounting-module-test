@@ -1,27 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import styles from './DashboardPage.module.scss';
+import { useOrdersQuery } from '@/web/entities/order/api/useOrdersQuery';
 import type { Order } from '@/web/entities/order/model/types';
 import { PaymentForm } from '@/web/features/payment-form/ui/PaymentForm';
 import { OrdersTable } from '@/web/features/orders-report/ui/OrdersTable';
 import { ReportSummary } from '@/web/features/orders-report/ui/ReportSummary';
-import { trpc } from '@/web/trpc';
+
+const emptyOrders: Order[] = [];
 
 export function DashboardPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [error, setError] = useState('');
-
-  const loadOrders = useCallback(async () => {
-    try {
-      setError('');
-      setOrders(await trpc.orders.list.query());
-    } catch {
-      setError('Не удалось загрузить заказы. Проверьте, что API запущен.');
-    }
-  }, []);
-
-  useEffect(() => {
-    void loadOrders();
-  }, [loadOrders]);
+  const ordersQuery = useOrdersQuery();
+  const orders = ordersQuery.data ?? emptyOrders;
 
   const totals = useMemo(
     () =>
@@ -47,19 +36,16 @@ export function DashboardPage() {
           Заказы, статусы оплаты и итоговый отчёт — с безопасной обработкой дублей.
         </p>
       </header>
-      {error && (
+      {ordersQuery.isPending && <p className="mt-4 text-sm text-slate-500">Загрузка заказов…</p>}
+      {ordersQuery.isError && (
         <p className="mt-4 rounded-xl bg-rose-100 px-4 py-3 text-sm font-medium text-rose-800">
-          {error}
+          Не удалось загрузить заказы. Проверьте, что API запущен.
         </p>
       )}
       <ReportSummary totals={totals} />
       <section className="grid items-start gap-5 lg:grid-cols-[2fr_1fr]">
         <OrdersTable orders={orders} />
-        <PaymentForm
-          orders={orders}
-          selectedOrderId={orders[0]?.id ?? ''}
-          onPaymentRecorded={loadOrders}
-        />
+        <PaymentForm orders={orders} selectedOrderId={orders[0]?.id ?? ''} />
       </section>
     </main>
   );

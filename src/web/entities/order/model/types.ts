@@ -1,4 +1,7 @@
-import type { trpc } from '@/web/trpc';
+import type { inferRouterOutputs } from '@trpc/server';
+import type { AppRouter } from '@/server/presentation/trpc/app.router';
 
-export type Order = Awaited<ReturnType<typeof trpc.orders.list.query>>[number];
+type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+export type Order = RouterOutputs['orders']['list'][number];
 export type OrderStatus = Order['status'];

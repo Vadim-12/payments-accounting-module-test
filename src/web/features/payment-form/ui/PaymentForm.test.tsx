@@ -4,8 +4,8 @@ import { PaymentForm } from '@/web/features/payment-form/ui/PaymentForm';
 
 const api = vi.hoisted(() => ({ addPayment: vi.fn() }));
 
-vi.mock('@/web/trpc', () => ({
-  trpc: { payments: { add: { mutate: api.addPayment } } },
+vi.mock('@/web/features/payment-form/api/useAddPaymentMutation', () => ({
+  useAddPaymentMutation: () => ({ isPending: false, mutateAsync: api.addPayment }),
 }));
 
 const order = {
@@ -24,7 +24,7 @@ describe('PaymentForm', () => {
   beforeEach(() => vi.resetAllMocks());
 
   it('does not send a zero-value payment', async () => {
-    render(<PaymentForm orders={[order]} selectedOrderId={order.id} onPaymentRecorded={vi.fn()} />);
+    render(<PaymentForm orders={[order]} selectedOrderId={order.id} />);
 
     fireEvent.change(screen.getByLabelText('Сумма, ₽'), { target: { value: '0' } });
     fireEvent.change(screen.getByLabelText('Внешний ID платежа'), {
@@ -36,16 +36,9 @@ describe('PaymentForm', () => {
     expect(api.addPayment).not.toHaveBeenCalled();
   });
 
-  it('submits an amount in minor currency units and refreshes the data', async () => {
-    const onPaymentRecorded = vi.fn().mockResolvedValue(undefined);
+  it('submits an amount in minor currency units', async () => {
     api.addPayment.mockResolvedValue({ duplicated: false, paymentId: 'payment-1' });
-    render(
-      <PaymentForm
-        orders={[order]}
-        selectedOrderId={order.id}
-        onPaymentRecorded={onPaymentRecorded}
-      />,
-    );
+    render(<PaymentForm orders={[order]} selectedOrderId={order.id} />);
 
     fireEvent.change(screen.getByLabelText('Сумма, ₽'), { target: { value: '1500.25' } });
     fireEvent.change(screen.getByLabelText('Внешний ID платежа'), {
@@ -60,13 +53,12 @@ describe('PaymentForm', () => {
         externalId: 'gateway-1',
       }),
     );
-    expect(onPaymentRecorded).toHaveBeenCalledOnce();
     expect(screen.getByText('Платёж добавлен.')).toBeTruthy();
   });
 
   it('shows an idempotency message for a duplicate payment', async () => {
     api.addPayment.mockResolvedValue({ duplicated: true, paymentId: 'payment-1' });
-    render(<PaymentForm orders={[order]} selectedOrderId={order.id} onPaymentRecorded={vi.fn()} />);
+    render(<PaymentForm orders={[order]} selectedOrderId={order.id} />);
 
     fireEvent.change(screen.getByLabelText('Сумма, ₽'), { target: { value: '1500' } });
     fireEvent.change(screen.getByLabelText('Внешний ID платежа'), {

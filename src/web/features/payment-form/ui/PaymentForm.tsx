@@ -2,26 +2,26 @@ import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 import styles from './PaymentForm.module.scss';
 import type { Order } from '@/web/entities/order/model/types';
+import { useAddPaymentMutation } from '@/web/features/payment-form/api/useAddPaymentMutation';
 import { formatCurrencyAmount, isMoneyInput, toMinorUnits } from '@/web/shared/lib/currency';
 import cardStyles from '@/web/shared/ui/AppCard.module.scss';
-import { trpc } from '@/web/trpc';
 
-type PaymentFormProps = {
+interface PaymentFormProps {
   orders: Order[];
   selectedOrderId: string;
-  onPaymentRecorded: () => Promise<void>;
-};
+}
 
 type FormNotice = {
   message: string;
   type: 'error' | 'success';
 };
 
-export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: PaymentFormProps) {
+export function PaymentForm({ orders, selectedOrderId }: PaymentFormProps) {
   const [orderId, setOrderId] = useState(selectedOrderId);
   const [amount, setAmount] = useState('');
   const [externalId, setExternalId] = useState('');
   const [notice, setNotice] = useState<FormNotice | null>(null);
+  const addPayment = useAddPaymentMutation();
 
   useEffect(() => {
     if (!orderId && selectedOrderId) {
@@ -39,7 +39,7 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
     }
 
     try {
-      const result = await trpc.payments.add.mutate({
+      const result = await addPayment.mutateAsync({
         orderId,
         amount: amountInMinorUnits,
         externalId,
@@ -56,8 +56,6 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
         setAmount('');
         setExternalId('');
       }
-
-      await onPaymentRecorded();
     } catch (error) {
       setNotice({
         type: 'error',
@@ -118,8 +116,8 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
           required
         />
       </label>
-      <button className={styles.primaryButton} type="submit">
-        Зачислить платёж
+      <button className={styles.primaryButton} disabled={addPayment.isPending} type="submit">
+        {addPayment.isPending ? 'Зачисление…' : 'Зачислить платёж'}
       </button>
       {notice && (
         <p
