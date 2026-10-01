@@ -1,11 +1,11 @@
 import type { Order } from '@/web/entities/order/model/types';
 import { StatusBadge } from '@/web/entities/order/ui/StatusBadge';
 import { formatCurrencyAmount } from '@/web/shared/lib/currency';
-import '@/web/shared/ui/AppCard.scss';
+import cardStyles from '@/web/shared/ui/AppCard.module.scss';
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   return (
-    <div className="app-card overflow-x-auto">
+    <div className={`${cardStyles.appCard} overflow-x-auto`}>
       <h2 className="mb-4 text-xl font-bold">Заказы</h2>
       <table className="w-full border-collapse text-sm">
         <thead>

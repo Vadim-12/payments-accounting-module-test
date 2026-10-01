@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import './DashboardPage.scss';
+import styles from './DashboardPage.module.scss';
 import type { Order } from '@/web/entities/order/model/types';
 import { PaymentForm } from '@/web/features/payment-form/ui/PaymentForm';
 import { OrdersTable } from '@/web/features/orders-report/ui/OrdersTable';
@@ -37,8 +37,8 @@ export function DashboardPage() {
   );
 
   return (
-    <main className="dashboard mx-auto max-w-6xl px-6 py-14">
-      <header className="dashboard-hero">
+    <main className={`${styles.dashboard} mx-auto max-w-6xl px-6 py-14`}>
+      <header className={styles.dashboardHero}>
         <p className="text-xs font-bold uppercase tracking-[.2em] text-cyan-200">
           Тестовое задание
         </p>

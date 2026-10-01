@@ -1,11 +1,11 @@
-.app-card.payment-panel {
+form.paymentPanel {
   border: 0;
   color: white;
   background: linear-gradient(155deg, #0f172a, #1e3a8a);
   box-shadow: 0 20px 35px rgba(30, 58, 138, 0.22);
 }
 
-.form-control {
+.formControl {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
@@ -16,12 +16,12 @@
   transition: 0.2s ease;
 }
 
-.form-control:focus {
+.formControl:focus {
   border-color: #67e8f9;
   box-shadow: 0 0 0 4px rgba(103, 232, 249, 0.22);
 }
 
-.primary-button {
+.primaryButton {
   width: 100%;
   margin-top: 0.5rem;
   border: 0;
@@ -36,21 +36,21 @@
     background 0.2s ease;
 }
 
-.primary-button:hover {
+.primaryButton:hover {
   transform: translateY(-1px);
   background: #a5f3fc;
 }
 
-.form-notice {
+.formNotice {
   margin: 0.75rem 0 0;
   font-size: 0.875rem;
   font-weight: 600;
 }
 
-.form-notice.error {
+.error {
   color: #fecaca;
 }
 
-.form-notice.success {
+.success {
   color: #a5f3fc;
 }

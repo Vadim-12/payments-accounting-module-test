@@ -1,5 +1,5 @@
 import type { OrderStatus } from '@/web/entities/order/model/types';
-import './StatusBadge.scss';
+import styles from './StatusBadge.module.scss';
 
 const statusName: Record<OrderStatus, string> = {
   unpaid: 'Не оплачен',
@@ -9,5 +9,5 @@ const statusName: Record<OrderStatus, string> = {
 };
 
 export function StatusBadge({ status }: { status: OrderStatus }) {
-  return <span className={`status-badge ${status}`}>{statusName[status]}</span>;
+  return <span className={`${styles.statusBadge} ${styles[status]}`}>{statusName[status]}</span>;
 }

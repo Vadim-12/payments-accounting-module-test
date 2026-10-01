@@ -1,9 +1,9 @@
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
-import './PaymentForm.scss';
-import '@/web/shared/ui/AppCard.scss';
+import styles from './PaymentForm.module.scss';
 import type { Order } from '@/web/entities/order/model/types';
 import { formatCurrencyAmount, isMoneyInput, toMinorUnits } from '@/web/shared/lib/currency';
+import cardStyles from '@/web/shared/ui/AppCard.module.scss';
 import { trpc } from '@/web/trpc';
 
 type PaymentFormProps = {
@@ -67,12 +67,12 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
   }
 
   return (
-    <form className="app-card payment-panel" onSubmit={submit}>
+    <form className={`${cardStyles.appCard} ${styles.paymentPanel}`} onSubmit={submit}>
       <h2 className="mb-4 text-xl font-bold">Добавить платёж</h2>
       <label className="mb-4 grid gap-2 text-sm font-semibold">
         Заказ
         <select
-          className="form-control"
+          className={styles.formControl}
           value={orderId}
           onChange={(event) => setOrderId(event.target.value)}
         >
@@ -86,7 +86,7 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
       <label className="mb-4 grid gap-2 text-sm font-semibold">
         Сумма, ₽
         <input
-          className="form-control"
+          className={styles.formControl}
           type="number"
           value={amount}
           onChange={(event) => {
@@ -110,7 +110,7 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
       <label className="mb-4 grid gap-2 text-sm font-semibold">
         Внешний ID платежа
         <input
-          className="form-control"
+          className={styles.formControl}
           value={externalId}
           onChange={(event) => setExternalId(event.target.value)}
           placeholder="payment_001"
@@ -118,12 +118,12 @@ export function PaymentForm({ orders, selectedOrderId, onPaymentRecorded }: Paym
           required
         />
       </label>
-      <button className="primary-button" type="submit">
+      <button className={styles.primaryButton} type="submit">
         Зачислить платёж
       </button>
       {notice && (
         <p
-          className={`form-notice ${notice.type}`}
+          className={`${styles.formNotice} ${styles[notice.type]}`}
           role={notice.type === 'error' ? 'alert' : 'status'}
         >
           {notice.message}
