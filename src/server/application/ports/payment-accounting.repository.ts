@@ -1,4 +1,4 @@
-import type { OrderStatus, PaymentInput } from '@/domain/accounting';
+import type { OrderStatus, PaymentInput } from '@/server/domain/accounting';
 
 import type { OrderWithPayments, PaymentCommand } from '@/server/domain/accounting.types';
 

@@ -1,4 +1,4 @@
-import { summarizePayments } from '@/domain/accounting';
+import { summarizePayments } from '@/server/domain/accounting';
 import type { OrderView } from '@/server/domain/accounting.types';
 import type { PaymentAccountingRepository } from '@/server/application/ports/payment-accounting.repository';
 

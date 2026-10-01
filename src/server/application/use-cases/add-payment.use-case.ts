@@ -1,4 +1,4 @@
-import { summarizePayments } from '@/domain/accounting';
+import { summarizePayments } from '@/server/domain/accounting';
 import { PaymentAlreadyExistsError } from '@/server/application/errors/payment-already-exists.error';
 import type { PaymentCommand, RecordPaymentResult } from '@/server/domain/accounting.types';
 import type { PaymentAccountingRepository } from '@/server/application/ports/payment-accounting.repository';

@@ -1,4 +1,4 @@
-import type { OrderStatus, PaymentInput } from '@/domain/accounting';
+import type { OrderStatus, PaymentInput } from '@/server/domain/accounting';
 
 export type OrderWithPayments = {
   id: string;

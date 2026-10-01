@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { summarizePayments } from '@/domain/accounting';
+import { summarizePayments } from '@/server/domain/accounting';
 
 describe('summarizePayments', () => {
   it('marks an order as partially paid', () => {
@@ -24,8 +24,11 @@ describe('summarizePayments', () => {
       { id: 'gateway-1', amount: 10_000 },
       { id: 'gateway-1', amount: 10_000 },
     ]) {
-      if (!acceptedPayments.has(payment.id)) acceptedPayments.set(payment.id, payment.amount);
+      if (!acceptedPayments.has(payment.id)) {
+        acceptedPayments.set(payment.id, payment.amount);
+      }
     }
+
     expect(
       summarizePayments(
         10_000,

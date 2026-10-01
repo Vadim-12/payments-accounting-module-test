@@ -20,6 +20,7 @@ export function summarizePayments(totalAmount: number, payments: PaymentInput[])
     if (!Number.isInteger(payment.amount) || payment.amount <= 0) {
       throw new Error('Payment amount must be a positive integer amount in minor currency units');
     }
+
     return sum + payment.amount;
   }, 0);
 

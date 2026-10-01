@@ -1,7 +1,7 @@
 import { asc, eq, sql } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
-import type { PaymentInput } from '@/domain/accounting';
+import type { PaymentInput } from '@/server/domain/accounting';
 import { PaymentAlreadyExistsError } from '@/server/application/errors/payment-already-exists.error';
 import type {
   PaymentAccountingRepository,
